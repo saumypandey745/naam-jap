@@ -153,6 +153,16 @@ export class LocalStorageAdapter implements PersistenceAdapter {
     }
   }
 
+  async deleteSession(sessionId: string): Promise<void> {
+    const existing = safeGet<JapSession[]>(KEYS.sessions) ?? [];
+    const filtered = existing.filter((s) => s.id !== sessionId);
+    safeSet(KEYS.sessions, filtered);
+  }
+
+  async clearAllSessions(): Promise<void> {
+    try { localStorage.removeItem(KEYS.sessions); } catch { /* ignore */ }
+  }
+
   // ─── Daily Stats ───────────────────────────────────────────
 
   async getDailyStats(date: string): Promise<DailyStats | null> {
