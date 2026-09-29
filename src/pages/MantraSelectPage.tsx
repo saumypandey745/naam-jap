@@ -212,9 +212,10 @@ export const MantraSelectPage: React.FC = () => {
           <h1 className="text-lg font-semibold text-text-primary">Choose Your Mantra</h1>
         </div>
         <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none z-10" aria-hidden="true" />
           <input
-            className="spiritual-input pl-9"
+            className="spiritual-input"
+            style={{ paddingLeft: '2.5rem' }}
             placeholder="Search mantras, deity, language..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
