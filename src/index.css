@@ -1,0 +1,452 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────
+   CSS Custom Properties — Design Tokens
+────────────────────────────────────────────────────── */
+
+:root {
+  --bg-base: #0D0A1A;
+  --bg-surface: #1A1530;
+  --bg-elevated: #231E3D;
+  --bg-card: #2A2448;
+  --gold: #C9842A;
+  --gold-light: #E8A94A;
+  --text-primary: #F5F0E8;
+  --text-secondary: #C5BAA8;
+  --text-muted: #8B7E6E;
+  --success: #4CAF8A;
+  --error: #E05C5C;
+  --warning: #E8A44A;
+  color-scheme: dark;
+}
+
+.light {
+  --bg-base: #FDF8F0;
+  --bg-surface: #FFF5E6;
+  --bg-elevated: #FFEFD5;
+  --bg-card: #FFE8C0;
+  --text-primary: #1A1530;
+  --text-secondary: #4A3F2F;
+  --text-muted: #7A6A5A;
+  color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────────────
+   Base resets
+────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────────────────
+   Scrollbar styling
+────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 2px;
+  opacity: 0.4;
+}
+
+/* ─────────────────────────────────────────────────────
+   Typography helpers
+────────────────────────────────────────────────────── */
+
+.font-devanagari {
+  font-family: 'Noto Serif Devanagari', serif;
+}
+
+/* ─────────────────────────────────────────────────────
+   Spiritual background gradient
+────────────────────────────────────────────────────── */
+
+.bg-spiritual {
+  background: radial-gradient(ellipse at 50% 0%, #231E3D 0%, #0D0A1A 65%);
+}
+
+/* ─────────────────────────────────────────────────────
+   Counter — main jap number
+────────────────────────────────────────────────────── */
+
+.jap-counter {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(3.5rem, 15vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  text-shadow: 0 0 40px rgba(201, 132, 42, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.jap-counter.pop {
+  animation: count-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ─────────────────────────────────────────────────────
+   Mantra text
+────────────────────────────────────────────────────── */
+
+.mantra-text-xl {
+  font-family: 'Noto Serif Devanagari', serif;
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  line-height: 1.3;
+  color: var(--gold-light);
+  text-shadow: 0 0 20px rgba(201, 132, 42, 0.3);
+}
+
+.mantra-text-lg {
+  font-family: 'Noto Serif Devanagari', serif;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+/* ─────────────────────────────────────────────────────
+   Mala ring
+────────────────────────────────────────────────────── */
+
+.mala-ring-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+/* ─────────────────────────────────────────────────────
+   Voice status indicator
+────────────────────────────────────────────────────── */
+
+.voice-listening-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: pulse-soft 1.5s ease-in-out infinite;
+}
+
+.voice-processing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse-soft 0.8s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────
+   Jap detected toast
+────────────────────────────────────────────────────── */
+
+.jap-toast {
+  animation: jap-detect 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────
+   Cards
+────────────────────────────────────────────────────── */
+
+.spiritual-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(201, 132, 42, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.spiritual-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(201, 132, 42, 0.35);
+}
+
+.spiritual-card-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201, 132, 42, 0.3), 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ─────────────────────────────────────────────────────
+   Buttons
+────────────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: #1A1530;
+  box-shadow: 0 4px 16px rgba(201, 132, 42, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-height: 48px;
+  min-width: 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(201, 132, 42, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 132, 42, 0.35);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--gold-light);
+  transition: background 0.15s ease, border-color 0.15s ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-secondary:hover {
+  background: rgba(201, 132, 42, 0.1);
+  border-color: rgba(201, 132, 42, 0.6);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: color 0.15s ease, background 0.15s ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────
+   Input
+────────────────────────────────────────────────────── */
+
+.spiritual-input {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(201, 132, 42, 0.2);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.spiritual-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 132, 42, 0.15);
+}
+
+.spiritual-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────
+   Navigation
+────────────────────────────────────────────────────── */
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+  min-width: 48px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.nav-item.active {
+  color: var(--gold-light);
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────
+   Progress bar
+────────────────────────────────────────────────────── */
+
+.progress-bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(201, 132, 42, 0.15);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(201, 132, 42, 0.4);
+}
+
+/* ─────────────────────────────────────────────────────
+   Divider
+────────────────────────────────────────────────────── */
+
+.spiritual-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 132, 42, 0.25), transparent);
+  margin: 1.5rem 0;
+}
+
+/* ─────────────────────────────────────────────────────
+   Animations (keyframes already in tailwind.config.js)
+────────────────────────────────────────────────────── */
+
+@keyframes count-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(201, 132, 42, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(201, 132, 42, 0.5), 0 0 80px rgba(201, 132, 42, 0.15); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes jap-detect {
+  0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+  30% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+  70% { opacity: 1; transform: translateY(-8px) scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.98); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ─────────────────────────────────────────────────────
+   Utility animation classes
+────────────────────────────────────────────────────── */
+
+.animate-fade-in  { animation: fade-in  0.3s ease both; }
+.animate-slide-up { animation: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-scale-in { animation: scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   Accessibility: focus styles
+────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────────────
+   Utility: safe area insets for PWA
+────────────────────────────────────────────────────── */
+
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+}
